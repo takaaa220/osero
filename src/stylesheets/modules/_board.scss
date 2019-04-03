@@ -11,8 +11,12 @@
   }
 
   & &__item {
+    align-items: center;
     background-color: green;
     border: 1px solid black;
+    display: flex;
+    font-size: 40px;
+    justify-content: center;
     list-style: none;
   }
 }

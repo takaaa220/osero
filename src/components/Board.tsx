@@ -1,9 +1,12 @@
 import * as React from "react";
+// import blackSvg from "../images/black.svg";
+// import whiteSvg from "../images/white.svg";
 
-type Stone = 0 | 1 | null;
+type stone = 0 | 1 | null;
+const showedBoards = ["●", "○"];
 
 export interface BoardProps {
-  boards: Stone[];
+  boards: stone[];
   setStone: Function;
 }
 
@@ -17,7 +20,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     for (let i = 0; i < 64; i += 1) {
       boardContainer.push(
         <li key={i} className="board__item" onClick={setStone.bind(this, i)}>
-          {boards[i]}
+          {boards[i] != null ? showedBoards[boards[i]] : null}
         </li>
       );
     }
