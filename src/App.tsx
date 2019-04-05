@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Board from "./components/Board";
+import EndGameModal from "./components/EndGameModal";
 
 type stone = 0 | 1 | 2 | null;
 
@@ -32,7 +33,7 @@ class App extends React.Component<AppProps, AppState> {
       isFinished: false
     };
     this.setStone = this.setStone.bind(this);
-    this.startGame = this.startGame.bind(this);
+    this.handleStartGame = this.handleStartGame.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +46,7 @@ class App extends React.Component<AppProps, AppState> {
     if (this.state.tarn === 2) {
       this.setState({
         boards: this.initialize(true),
+        isFinished: false,
         tarn: 0
       });
     } else if (prevState.tarn !== this.state.tarn) {
@@ -57,7 +59,7 @@ class App extends React.Component<AppProps, AppState> {
         blackStoneNum === 0 ||
         whiteStoneNum === 0
       ) {
-        alert("end geme");
+        this.setState({ isFinished: true });
       } else {
         this.setState({ blackStoneNum, whiteStoneNum });
         this.canPutStone();
@@ -134,6 +136,9 @@ class App extends React.Component<AppProps, AppState> {
       }
     }
     this.setState({ canPutBoards });
+    if (canPutBoards.filter(board => board === 1).length === 0) {
+      this.setStone({ tarn: this.state.tarn === 0 ? 1 : 0 });
+    }
   }
 
   setStone(i: any) {
@@ -160,7 +165,7 @@ class App extends React.Component<AppProps, AppState> {
     return boards;
   }
 
-  startGame() {
+  handleStartGame() {
     this.setState({ tarn: 2 });
   }
 
@@ -181,9 +186,15 @@ class App extends React.Component<AppProps, AppState> {
           canPutBoards={canPutBoards}
         />
         {`黒: ${blackStoneNum} - 白: ${whiteStoneNum}`}
-        <button onClick={this.startGame} disabled={isFinished}>
+        <button onClick={this.handleStartGame} disabled={isFinished}>
           はじめから
         </button>
+        <EndGameModal
+          isFinished={isFinished}
+          handleStartGame={this.handleStartGame}
+          whiteStoneNum={whiteStoneNum}
+          blackStoneNum={blackStoneNum}
+        />
       </div>
     );
   }
