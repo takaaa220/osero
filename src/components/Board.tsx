@@ -4,22 +4,29 @@ import * as React from "react";
 
 type stone = 0 | 1 | null;
 const showedBoards = ["●", "○"];
+const backgroundStyle = { backgroundColor: "yellow" };
 
 export interface BoardProps {
   boards: stone[];
   setStone: Function;
+  canPutBoards: stone[];
 }
 
 export interface BoardState {}
 
 class Board extends React.Component<BoardProps, BoardState> {
   render() {
-    const { boards, setStone } = this.props;
+    const { boards, setStone, canPutBoards } = this.props;
 
     const boardContainer: any = [];
     for (let i = 0; i < 64; i += 1) {
       boardContainer.push(
-        <li key={i} className="board__item" onClick={setStone.bind(this, i)}>
+        <li
+          key={i}
+          className="board__item"
+          onClick={setStone.bind(this, i)}
+          style={canPutBoards[i] === 1 ? backgroundStyle : {}}
+        >
           {boards[i] != null ? showedBoards[boards[i]] : null}
         </li>
       );
