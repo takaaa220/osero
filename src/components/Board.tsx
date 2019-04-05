@@ -3,7 +3,7 @@ import * as React from "react";
 // import whiteSvg from "../images/white.svg";
 
 type stone = 0 | 1 | 2 | null;
-const showedBoards = ["●", "○"];
+const showedBoards = ["●", "○", ""];
 const backgroundStyle = { backgroundColor: "#dd6" };
 
 export interface BoardProps {
@@ -27,7 +27,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           onClick={setStone.bind(this, i)}
           style={canPutBoards[i] === 1 ? backgroundStyle : {}}
         >
-          {boards[i] != null ? showedBoards[boards[i]] : null}
+          {showedBoards[boards[i] || 2]}
         </li>
       );
     }
