@@ -1,3 +1,23 @@
 @charset "UTF-8";
 
+@import "settings/reset";
+
+@import "modules/end-game-modal";
 @import "modules/board";
+
+.app {
+  &:not(:root) {
+    align-items: center;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    font-size: 42px;
+    height: 100vh;
+    justify-content: center;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+}

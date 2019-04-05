@@ -1,0 +1,16 @@
+/* end-game-modal */
+
+.end-game-modal {
+  & &__winner {
+    font-size: 60px;
+    margin-bottom: 30px;
+  }
+
+  & &__button {
+    border-radius: 40px;
+    font-size: 28px;
+    padding: 10px 30px;
+    background-color: #108d3a;
+    color: #fafafa;
+  }
+}

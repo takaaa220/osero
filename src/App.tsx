@@ -19,6 +19,7 @@ export interface AppState {
   whiteStoneNum: number;
   blackStoneNum: number;
   isFinished: boolean;
+  isPassed: boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -30,7 +31,8 @@ class App extends React.Component<AppProps, AppState> {
       canPutBoards: this.initialize(false),
       whiteStoneNum: 2,
       blackStoneNum: 2,
-      isFinished: false
+      isFinished: false,
+      isPassed: false
     };
     this.setStone = this.setStone.bind(this);
     this.handleStartGame = this.handleStartGame.bind(this);
@@ -61,8 +63,20 @@ class App extends React.Component<AppProps, AppState> {
       ) {
         this.setState({ isFinished: true });
       } else {
+        if (!this.canPutStone()) {
+          if (this.state.isPassed) {
+            this.setState({ isFinished: true });
+          } else {
+            alert("pass!");
+            this.setState({
+              tarn: prevState.tarn,
+              isPassed: true
+            });
+          }
+        } else {
+          this.setState({ isPassed: false });
+        }
         this.setState({ blackStoneNum, whiteStoneNum });
-        this.canPutStone();
       }
     }
   }
@@ -124,7 +138,7 @@ class App extends React.Component<AppProps, AppState> {
     return flag;
   }
 
-  canPutStone() {
+  canPutStone(): boolean {
     const canPutBoards = this.state.canPutBoards;
     for (let i = 0; i < 8; i += 1) {
       for (let j = 0; j < 8; j += 1) {
@@ -136,9 +150,7 @@ class App extends React.Component<AppProps, AppState> {
       }
     }
     this.setState({ canPutBoards });
-    if (canPutBoards.filter(board => board === 1).length === 0) {
-      this.setStone({ tarn: this.state.tarn === 0 ? 1 : 0 });
-    }
+    return canPutBoards.filter(board => board === 1).length !== 0;
   }
 
   setStone(i: any) {
@@ -178,17 +190,14 @@ class App extends React.Component<AppProps, AppState> {
       isFinished
     } = this.state;
     return (
-      <div>
-        {this.state.tarn === 0 ? "黒のターン" : "白のターン"}
+      <div className="app">
         <Board
           boards={boards}
           setStone={this.setStone}
           canPutBoards={canPutBoards}
         />
-        {`黒: ${blackStoneNum} - 白: ${whiteStoneNum}`}
-        <button onClick={this.handleStartGame} disabled={isFinished}>
-          はじめから
-        </button>
+        <p>{this.state.tarn === 0 ? "黒のターン" : "白のターン"}</p>
+        <p>{`●x${blackStoneNum}  -  ○x${whiteStoneNum}`}</p>
         <EndGameModal
           isFinished={isFinished}
           handleStartGame={this.handleStartGame}

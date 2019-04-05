@@ -41,7 +41,12 @@ const EndGameModal: React.SFC<EndGameModalProps> = props => {
           ? "白の勝ち!"
           : "黒の勝ち!"}
       </h2>
-      <button onClick={props.handleStartGame}>もう一度</button>
+      <button
+        className="end-game-modal__button"
+        onClick={props.handleStartGame}
+      >
+        もう一度
+      </button>
     </ReactModal>
   );
 };
