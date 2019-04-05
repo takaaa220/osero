@@ -2,7 +2,7 @@ import * as React from "react";
 // import blackSvg from "../images/black.svg";
 // import whiteSvg from "../images/white.svg";
 
-type stone = 0 | 1 | null;
+type stone = 0 | 1 | 2 | null;
 const showedBoards = ["●", "○"];
 const backgroundStyle = { backgroundColor: "yellow" };
 

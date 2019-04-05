@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Board from "./components/Board";
 
-type stone = 0 | 1 | null;
+type stone = 0 | 1 | 2 | null;
 
 interface WidthHeight {
   w: number;
@@ -12,9 +12,12 @@ interface WidthHeight {
 export interface AppProps {}
 
 export interface AppState {
-  tarn: 0 | 1;
+  tarn: 0 | 1 | 2;
   boards: stone[];
   canPutBoards: stone[];
+  whiteStoneNum: number;
+  blackStoneNum: number;
+  isFinished: boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -23,9 +26,13 @@ class App extends React.Component<AppProps, AppState> {
     this.state = {
       tarn: 0,
       boards: this.initialize(true),
-      canPutBoards: this.initialize(false)
+      canPutBoards: this.initialize(false),
+      whiteStoneNum: 2,
+      blackStoneNum: 2,
+      isFinished: false
     };
     this.setStone = this.setStone.bind(this);
+    this.startGame = this.startGame.bind(this);
   }
 
   componentDidMount() {
@@ -34,9 +41,27 @@ class App extends React.Component<AppProps, AppState> {
 
   // tslint:disable-next-line:variable-name
   componentDidUpdate(_PrevProps: AppProps, prevState: AppState) {
-    if (prevState.tarn !== this.state.tarn) {
-      console.log(prevState.tarn, this.state.tarn);
-      this.canPutStone();
+    // restart game
+    if (this.state.tarn === 2) {
+      this.setState({
+        boards: this.initialize(true),
+        tarn: 0
+      });
+    } else if (prevState.tarn !== this.state.tarn) {
+      const boards = this.state.boards;
+      const blackStoneNum = boards.filter(board => board === 0).length;
+      const whiteStoneNum = boards.filter(board => board === 1).length;
+      // end game
+      if (
+        blackStoneNum + whiteStoneNum === 64 ||
+        blackStoneNum === 0 ||
+        whiteStoneNum === 0
+      ) {
+        alert("end geme");
+      } else {
+        this.setState({ blackStoneNum, whiteStoneNum });
+        this.canPutStone();
+      }
     }
   }
 
@@ -51,7 +76,6 @@ class App extends React.Component<AppProps, AppState> {
     w: number,
     isReverse: boolean
   ): boolean {
-    console.log(i, j, h, w, isReverse);
     const boards = this.state.boards;
     const enemyStone = this.state.tarn === 0 ? 1 : 0;
     if (w < 0 || w > 7 || h < 0 || h > 7) {
@@ -74,7 +98,6 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   putStone(index: any, isReverse: boolean): boolean {
-    console.log(index, isReverse);
     const boards = this.state.boards;
     const { w, h } = this.returnWidthHeight(index);
     const enemyStone = this.state.tarn === 0 ? 1 : 0;
@@ -137,8 +160,18 @@ class App extends React.Component<AppProps, AppState> {
     return boards;
   }
 
+  startGame() {
+    this.setState({ tarn: 2 });
+  }
+
   render() {
-    const { boards, canPutBoards } = this.state;
+    const {
+      boards,
+      canPutBoards,
+      whiteStoneNum,
+      blackStoneNum,
+      isFinished
+    } = this.state;
     return (
       <div>
         {this.state.tarn === 0 ? "黒のターン" : "白のターン"}
@@ -147,6 +180,10 @@ class App extends React.Component<AppProps, AppState> {
           setStone={this.setStone}
           canPutBoards={canPutBoards}
         />
+        {`黒: ${blackStoneNum} - 白: ${whiteStoneNum}`}
+        <button onClick={this.startGame} disabled={isFinished}>
+          はじめから
+        </button>
       </div>
     );
   }
