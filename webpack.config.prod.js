@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PrettierPlugin = require("prettier-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: [
     "./src/App.tsx", // エントリポイントの指定、src下に書いていくので　src/index.tsxにしとく
     "./src/stylesheets/application.scss"
