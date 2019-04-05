@@ -2,7 +2,7 @@ import * as React from "react";
 // import blackSvg from "../images/black.svg";
 // import whiteSvg from "../images/white.svg";
 
-type stone = 0 | 1 | 2 | null;
+type stone = 0 | 1 | 2;
 const showedBoards = ["●", "○", ""];
 const backgroundStyle = { backgroundColor: "#dd6" };
 
@@ -27,7 +27,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           onClick={setStone.bind(this, i)}
           style={canPutBoards[i] === 1 ? backgroundStyle : {}}
         >
-          {showedBoards[boards[i] || 2]}
+          {showedBoards[boards[i]]}
         </li>
       );
     }

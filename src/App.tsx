@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import Board from "./components/Board";
 import EndGameModal from "./components/EndGameModal";
 
-type stone = 0 | 1 | 2 | null;
+type stone = 0 | 1 | 2;
 
 interface WidthHeight {
   w: number;
@@ -165,13 +165,15 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   initialize(isPutBoard: boolean): stone[] {
-    const boards = Array(64);
+    let boards = Array(64).fill(2);
 
     if (isPutBoard) {
       boards[27] = 1;
       boards[28] = 0;
       boards[35] = 0;
       boards[36] = 1;
+    } else {
+      boards = boards.fill(0);
     }
 
     return boards;
