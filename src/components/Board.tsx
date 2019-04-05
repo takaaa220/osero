@@ -4,7 +4,7 @@ import * as React from "react";
 
 type stone = 0 | 1 | 2 | null;
 const showedBoards = ["●", "○"];
-const backgroundStyle = { backgroundColor: "yellow" };
+const backgroundStyle = { backgroundColor: "#dd6" };
 
 export interface BoardProps {
   boards: stone[];
